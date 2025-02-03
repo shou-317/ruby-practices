@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 def fizz_buzz(n)
   if n % 15 == 0
     "FizzBuzz"
