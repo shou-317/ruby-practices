@@ -1,15 +1,15 @@
 #!/usr/bin/env ruby
 
-def fizz_buzz(n)
-  if n % 15 == 0
-    "FizzBuzz"
-  elsif n % 3 == 0
-    "Fizz"
-  elsif n % 5 == 0
-    "Buzz"
+def fizz_buzz(num)
+  if (num % 15).zero?
+    'FizzBuzz'
+  elsif (num % 3).zero?
+    'Fizz'
+  elsif (num % 5).zero?
+    'Buzz'
   else
-    n
+    num
   end
 end
 
-(1..20).each { |n| puts fizz_buzz(n) }
+(1..20).each { |num| puts fizz_buzz(num) }
