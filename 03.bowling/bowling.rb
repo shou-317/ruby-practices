@@ -1,9 +1,12 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-params = ARGV[0]
+# コマンドライン引数を配列にする
+scores = ARGV[0].split(',')
 
+# データの整形
+# 文字列を整数に変換する
 shots = []
-scores = params.split(',')
 scores.each do |score|
   if score == 'X'
     shots << 10
@@ -13,36 +16,34 @@ scores.each do |score|
   end
 end
 
-frames = shots.each_slice(2).to_a
-if frames[9][0] == 10
-  if frames[10][0] == 10
-    frames[9].concat(frames[10], frames[11])
-    frames.pop(2)
-  else
-    frames[9].concat(frames[10])
-    frames.pop(1)
-  end
-  frames[9].delete(0)
+# 整数の配列を2つずつ分ける
+frames = []
+shots.each_slice(2) do |shot|
+  frames << shot
 end
+# 0が入ると処理が複雑化するため、[10,0]を[10]にする
+frames = frames.map { |frame| frame == [10, 0] ? [10] : frame }
+# 10フレーム以降の要素を1つにまとめる
+frames[9..] = [frames[9..].flatten]
 
+# スコア計算
 point = 0
-frames.each_with_index do |frame, idx|
-  if idx == 9
-    point += frame.sum
-  elsif frame[0] == 10
-    if frames[idx + 1][0] == 10
-      if idx >= 8
-        point += frame[0] + frames[idx + 1][0..1].sum
-      else
-        point += frame[0] + frames[idx + 1][0..1].sum + frames[idx + 2][0]
-      end
+point += frames.each_with_index.sum do |frame, index|
+  # 10投目はフレームの合計
+  if index == 9
+    frame.sum
+  elsif frame[0] == 10 # ストライクのとき
+    # 次のフレームがストライクかどうかで条件分岐
+    if frames[index + 1][0] == 10
+      # [[10], [10], [n(, n)]..]のとき、frames[index + 1][1]はnilのため、frames[index + 2][0]を2投目として加算する
+      frame[0] + frames[index + 1][0] + (frames[index + 1][1] || frames[index + 2][0])
     else
-      point += frame[0] + frames[idx + 1][0..1].sum
+      frame[0] + frames[index + 1][0..1].sum # 次の2投を加算
     end
-  elsif frame.sum == 10
-    point += frame.sum + frames[idx + 1][0]
+  elsif frame.sum == 10 # スペアのとき
+    frame.sum + frames[index + 1][0] # 次の1投を加算
   else
-    point += frame.sum
+    frame.sum
   end
 end
 
