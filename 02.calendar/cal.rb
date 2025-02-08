@@ -10,8 +10,9 @@ def parse_arguments
   option_parser.on('-m [VAL]', Integer) { |m| params[:month] = m }
   option_parser.on('-y [VAL]', Integer) { |m| params[:year] = m }
   option_parser.parse!(ARGV, into: params)
-  params[:year] ||= Date.today.year
-  params[:month] ||= (params[:year] == Date.today.year ? Date.today.month : 1)
+  today = Date.today
+  params[:year] ||= today.year
+  params[:month] ||= (params[:year] == today.year ? today.month : 1)
   generate_calendar(params)
 end
 
