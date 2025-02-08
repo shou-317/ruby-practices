@@ -4,6 +4,12 @@
 require 'date'
 require 'optparse'
 
+def main
+  params = parse_arguments
+  calendar_rows = generate_calendar(params)
+  display_calendar(params, calendar_rows)
+end
+
 def parse_arguments
   option_parser = OptionParser.new
   params = {}
@@ -13,7 +19,7 @@ def parse_arguments
   today = Date.today
   params[:year] ||= today.year
   params[:month] ||= (params[:year] == today.year ? today.month : 1)
-  generate_calendar(params)
+  params
 end
 
 def generate_calendar(params)
@@ -21,13 +27,13 @@ def generate_calendar(params)
   last_date = Date.new(params[:year], params[:month], -1)
   days_in_month = last_date.day
   leading_spaces = [' '] * first_date.wday
+
   calendar_rows = (1..days_in_month)
                   .to_a
                   .unshift(*leading_spaces)
                   .each_slice(7)
                   .map { |week| week.map { |day| day.to_s.rjust(2) }.join(' ') }
                   .join("\n")
-  display_calendar(params, calendar_rows)
 end
 
 def display_calendar(params, calendar_rows)
@@ -36,4 +42,4 @@ def display_calendar(params, calendar_rows)
   puts calendar_rows
 end
 
-parse_arguments
+main if __FILE__ == $PROGRAM_NAME
