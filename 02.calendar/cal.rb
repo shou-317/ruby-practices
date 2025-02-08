@@ -28,12 +28,12 @@ def generate_calendar(params)
   days_in_month = last_date.day
   leading_spaces = [' '] * first_date.wday
 
-  calendar_rows = (1..days_in_month)
-                  .to_a
-                  .unshift(*leading_spaces)
-                  .each_slice(7)
-                  .map { |week| week.map { |day| day.to_s.rjust(2) }.join(' ') }
-                  .join("\n")
+  (1..days_in_month)
+    .to_a
+    .unshift(*leading_spaces)
+    .each_slice(7)
+    .map { |week| week.map { |day| day.to_s.rjust(2) }.join(' ') }
+    .join("\n")
 end
 
 def display_calendar(params, calendar_rows)
