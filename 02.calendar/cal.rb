@@ -17,10 +17,10 @@ def parse_arguments
 end
 
 def generate_calendar(params)
-  first_day = Date.new(params[:year], params[:month], 1)
-  last_day = Date.new(params[:year], params[:month], -1)
-  days_in_month = last_day.day
-  leading_spaces = [' '] * first_day.wday
+  first_date = Date.new(params[:year], params[:month], 1)
+  last_date = Date.new(params[:year], params[:month], -1)
+  days_in_month = last_date.day
+  leading_spaces = [' '] * first_date.wday
   calendar_rows = (1..days_in_month)
                   .to_a
                   .unshift(*leading_spaces)
