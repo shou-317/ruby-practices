@@ -4,14 +4,7 @@
 scores = ARGV[0].split(',')
 
 shots = []
-scores.each do |score|
-  if score == 'X'
-    shots << 10
-    shots << 0
-  else
-    shots << score.to_i
-  end
-end
+shots = scores.flat_map { |score| score == 'X' ? [10, 0] : score.to_i }
 
 frames = []
 frames = shots.each_slice(2).to_a
