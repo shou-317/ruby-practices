@@ -12,15 +12,16 @@ frames = frames.map { |frame| frame == [10, 0] ? STRIKE : frame }
 frames[9..] = [frames[9..].flatten]
 
 point = frames.each_with_index.sum do |frame, index|
-  next frame.sum if index == 9
+  frame_sum = frame.sum
+  next frame_sum if index == 9
 
   if frame == STRIKE
     second_bonus_ball = frames[index + 1][1] || frames[index + 2][0]
-    frame.sum + frames[index + 1][0] + second_bonus_ball
-  elsif frame.sum == 10
-    frame.sum + frames[index + 1][0]
+    frame_sum + frames[index + 1][0] + second_bonus_ball
+  elsif frame_sum == 10
+    frame_sum + frames[index + 1][0]
   else
-    frame.sum
+    frame_sum
   end
 end
 
