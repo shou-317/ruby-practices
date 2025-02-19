@@ -14,8 +14,8 @@ def parse_arguments
   option_parser = OptionParser.new
   params = {}
   option_parser.on('-m [VAL]', Integer) { |m| params[:month] = m }
-  option_parser.on('-y [VAL]', Integer) { |m| params[:year] = m }
-  option_parser.parse!(ARGV, into: params)
+  option_parser.on('-y [VAL]', Integer) { |y| params[:year] = y }
+  option_parser.parse!(ARGV)
   today = Date.today
   params[:year] ||= today.year
   params[:month] ||= (params[:year] == today.year ? today.month : 1)
