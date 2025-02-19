@@ -23,17 +23,15 @@ end
 
 def calculate_point(frames)
   frames.each_with_index.sum do |frame, index|
-    frame_sum = frame.sum
-    next frame_sum if index == 9
+    next frame.sum if index == 9
 
-    if frame == STRIKE
-      second_bonus_ball = frames[index + 1][1] || frames[index + 2][0]
-      frame_sum + frames[index + 1][0] + second_bonus_ball
-    elsif frame_sum == 10
-      frame_sum + frames[index + 1][0]
-    else
-      frame_sum
-    end
+    bonus = if frame == STRIKE
+              frames[index + 1][0] + (frames[index + 1][1] || frames[index + 2][0])
+            elsif frame.sum == 10
+              frames[index + 1][0]
+            end
+
+    frame.sum + bonus.to_i
   end
 end
 
