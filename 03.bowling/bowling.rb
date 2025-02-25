@@ -29,9 +29,11 @@ def calculate_point(frames)
               frames[index + 1][0] + (frames[index + 1][1] || frames[index + 2][0])
             elsif frame.sum == 10
               frames[index + 1][0]
+            else
+              0
             end
 
-    frame.sum + bonus.to_i
+    frame.sum + bonus
   end
 end
 
